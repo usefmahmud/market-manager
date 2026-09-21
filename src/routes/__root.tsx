@@ -36,6 +36,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				rel: "stylesheet",
 				href: appCss,
 			},
+			{
+				rel: "preload",
+				href: "/audio/mixkit-select-click-1109.wav",
+				as: "audio",
+			},
 		],
 	}),
 	shellComponent: RootDocument,
@@ -54,18 +59,18 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					</TooltipProvider>
 					<Toaster />
 					<TanStackDevtools
-					config={{
-						position: "bottom-right",
-					}}
-					plugins={[
-						{
-							name: "Tanstack Router",
-							render: <TanStackRouterDevtoolsPanel />,
-						},
-						TanStackQueryDevtools,
-					]}
-				/>
-				<Scripts />
+						config={{
+							position: "bottom-right",
+						}}
+						plugins={[
+							{
+								name: "Tanstack Router",
+								render: <TanStackRouterDevtoolsPanel />,
+							},
+							TanStackQueryDevtools,
+						]}
+					/>
+					<Scripts />
 				</ThemeProvider>
 			</body>
 		</html>

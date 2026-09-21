@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { and, desc, eq, ilike, sql } from "drizzle-orm";
 import { db } from "#/db";
-import { categories, products } from "#/db/schema";
+import { categories, invoiceItems, invoices, products } from "#/db/schema";
 import { deleteRecord } from "#/lib/db-helpers";
 import { createProductSchema, updateProductSchema } from "./types";
 
@@ -133,4 +133,34 @@ export const deleteProductFn = createServerFn({ method: "POST" })
 			table: products,
 			errorMessage: "Product not found",
 		});
+	});
+
+export const getPopularProductsFn = createServerFn({ method: "GET" })
+	.validator((input: { limit?: number }) => input)
+	.handler(async ({ data }) => {
+		const limit = data.limit ?? 8;
+
+		return await db
+			.select({
+				id: products.id,
+				name: products.name,
+				price: products.price,
+				unit: products.unit,
+				categoryName: categories.name,
+				totalSold: sql<number>`sum(${invoiceItems.quantity})`.as("total_sold"),
+			})
+			.from(invoiceItems)
+			.innerJoin(invoices, eq(invoiceItems.invoiceId, invoices.id))
+			.innerJoin(products, eq(invoiceItems.productId, products.id))
+			.leftJoin(categories, eq(products.categoryId, categories.id))
+			.where(sql`${invoices.voidedAt} IS NULL`)
+			.groupBy(
+				products.id,
+				products.name,
+				products.price,
+				products.unit,
+				categories.name,
+			)
+			.orderBy(sql`sum(${invoiceItems.quantity}) DESC`)
+			.limit(limit);
 	});

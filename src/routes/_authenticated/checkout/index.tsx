@@ -3,6 +3,7 @@ import { ArrowLeft, Banknote, CreditCard, Wallet } from "lucide-react";
 import { useState } from "react";
 import { Cart } from "#/features/checkout/components/cart";
 import { MixedPaymentDialog } from "#/features/checkout/components/mixed-payment-dialog";
+import { PopularProducts } from "#/features/checkout/components/popular-products";
 import { ProductSearch } from "#/features/checkout/components/product-search";
 import { useCheckout } from "#/features/checkout/hooks/use-checkout";
 import { Button } from "#/lib/components/ui/button";
@@ -41,8 +42,9 @@ function CheckoutPage() {
 						(F2 to focus scanner)
 					</span>
 				</div>
-				<div className="flex-1 overflow-hidden p-4">
+				<div className="flex-1 overflow-y-auto p-4 space-y-4">
 					<ProductSearch onAddProduct={addToCart} />
+					<PopularProducts onAddProduct={addToCart} />
 				</div>
 			</div>
 
