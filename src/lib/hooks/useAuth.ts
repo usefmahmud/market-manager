@@ -1,15 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
+import { createContext, useContext } from "react";
 import { clearSessionCookieFn } from "#/features/auth/api-client";
 
+export interface AuthUser {
+	id: number;
+	name: string;
+	email: string;
+	role: string;
+}
+
+export const AuthContext = createContext<AuthUser | null>(null);
+
 export function useAuth() {
+	const user = useContext(AuthContext);
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
-	const ctx = useRouteContext({ strict: false }) as {
-		user?: { id: number; name: string; email: string; role: string };
-	};
-
-	const user = ctx?.user ?? null;
 
 	const logout = useMutation({
 		mutationFn: async () => {

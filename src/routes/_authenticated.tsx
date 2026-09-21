@@ -1,15 +1,12 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { meFromCookieFn } from "#/features/auth/api-client";
 import { AppSidebar } from "#/features/layout/components/app-sidebar";
+import { AuthContext, type AuthUser } from "#/lib/hooks/useAuth";
 import { SidebarInset } from "#/lib/components/ui/sidebar";
 import { Skeleton } from "#/lib/components/ui/skeleton";
 
-interface AuthContext {
-	user: { id: number; name: string; email: string; role: string };
-}
-
 export const Route = createFileRoute("/_authenticated")({
-	beforeLoad: async (): Promise<AuthContext> => {
+	loader: async () => {
 		try {
 			const user = await meFromCookieFn();
 			return { user };
@@ -33,12 +30,14 @@ function AuthLoading() {
 }
 
 function AuthenticatedLayout() {
+	const { user } = Route.useLoaderData() as { user: AuthUser };
+
 	return (
-		<>
+		<AuthContext.Provider value={user}>
 			<AppSidebar />
 			<SidebarInset>
 				<Outlet />
 			</SidebarInset>
-		</>
+		</AuthContext.Provider>
 	);
 }
