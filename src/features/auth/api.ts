@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { setCookie, deleteCookie } from "@tanstack/react-start/server";
 import { compare } from "bcryptjs";
 import { eq } from "drizzle-orm";
 import { db } from "#/db";
@@ -30,6 +31,9 @@ export const loginFn = createServerFn({ method: "POST" })
 			email: user[0].email,
 			role: user[0].role,
 		});
+
+		const maxAge = 60 * 60 * 24 * 7; // 7 days
+		setCookie("session", token, { path: "/", maxAge });
 
 		return {
 			token,
@@ -70,6 +74,7 @@ export const registerFn = createServerFn({ method: "POST" })
 	});
 
 export const logoutFn = createServerFn({ method: "POST" }).handler(async () => {
+	deleteCookie("session", { path: "/" });
 	return { success: true };
 });
 
