@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
 	createUserFn,
 	deleteUserFn,
@@ -22,6 +23,10 @@ export function useCreateUser() {
 		mutationFn: (data: CreateUserInput) => createUserFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["users"] });
+			toast.success("User created");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to create user");
 		},
 	});
 }
@@ -32,6 +37,10 @@ export function useUpdateUser() {
 		mutationFn: (data: UpdateUserInput) => updateUserFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["users"] });
+			toast.success("User updated");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to update user");
 		},
 	});
 }
@@ -42,6 +51,10 @@ export function useDeleteUser() {
 		mutationFn: (data: { id: number }) => deleteUserFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["users"] });
+			toast.success("User deleted");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to delete user");
 		},
 	});
 }

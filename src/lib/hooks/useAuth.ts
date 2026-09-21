@@ -26,7 +26,7 @@ export function useAuth() {
 		},
 		onSuccess: () => {
 			queryClient.clear();
-			navigate({ to: "/login" as any });
+			navigate({ to: "/login" });
 		},
 	});
 

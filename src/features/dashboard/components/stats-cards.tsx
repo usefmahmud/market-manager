@@ -14,16 +14,17 @@ export function StatsCards() {
 	return (
 		<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 			<StatsCard title="Total Products" queryKey={["products", "count"]}>
-				{({ data }) => {
-					const count = data?.data?.length ?? 0;
+				{({ data, isLoading }) => {
+					if (isLoading) return <Skeleton className="h-8 w-20" />;
+					const count = Array.isArray(data) ? data.length : 0;
 					return <div className="text-2xl font-bold">{count}</div>;
 				}}
 			</StatsCard>
 			<StatsCard title="Low Stock Items" queryKey={["stock", "low"]}>
 				{({ data, isLoading }) => {
 					if (isLoading) return <Skeleton className="h-8 w-20" />;
-					const lowStock = (data ?? []).filter(
-						(s: { quantity: number }) => s.quantity < 10,
+					const lowStock = (Array.isArray(data) ? data : []).filter(
+						(s: { totalQuantity: number }) => s.totalQuantity < 10,
 					);
 					return (
 						<div className="text-2xl font-bold text-destructive">
@@ -36,7 +37,7 @@ export function StatsCards() {
 				{({ data, isLoading }) => {
 					if (isLoading) return <Skeleton className="h-8 w-20" />;
 					const today = new Date().toISOString().split("T")[0];
-					const todayInvoices = (data ?? []).filter(
+					const todayInvoices = (Array.isArray(data) ? data : []).filter(
 						(inv: { createdAt: string }) => inv.createdAt?.startsWith(today),
 					);
 					return (
@@ -47,7 +48,7 @@ export function StatsCards() {
 			<StatsCard title="Total Revenue" queryKey={["invoices", "revenue"]}>
 				{({ data, isLoading }) => {
 					if (isLoading) return <Skeleton className="h-8 w-20" />;
-					const revenue = (data ?? []).reduce(
+					const revenue = (Array.isArray(data) ? data : []).reduce(
 						(sum: number, inv: { total: string }) =>
 							sum + Number(inv.total ?? 0),
 						0,

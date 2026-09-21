@@ -101,9 +101,9 @@ function CheckoutPage() {
 				open={mixedPaymentOpen}
 				onOpenChange={setMixedPaymentOpen}
 				total={total}
-				onConfirm={() => {
+				onConfirm={(cash, card) => {
 					setMixedPaymentOpen(false);
-					checkout("mixed");
+					checkout("mixed", { cash, card });
 				}}
 			/>
 		</div>

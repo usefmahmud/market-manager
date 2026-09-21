@@ -1,4 +1,6 @@
+import { Wrench } from "lucide-react";
 import { Badge } from "#/lib/components/ui/badge";
+import { Button } from "#/lib/components/ui/button";
 import {
 	Table,
 	TableBody,
@@ -17,9 +19,10 @@ interface StockLevel {
 
 interface StockLevelTableProps {
 	levels: StockLevel[];
+	onAdjust: (product: { id: number; name: string }) => void;
 }
 
-export function StockLevelTable({ levels }: StockLevelTableProps) {
+export function StockLevelTable({ levels, onAdjust }: StockLevelTableProps) {
 	return (
 		<Table>
 			<TableHeader>
@@ -28,13 +31,14 @@ export function StockLevelTable({ levels }: StockLevelTableProps) {
 					<TableHead>Barcode</TableHead>
 					<TableHead>Quantity</TableHead>
 					<TableHead>Status</TableHead>
+					<TableHead className="w-24">Actions</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
 				{levels.length === 0 ? (
 					<TableRow>
 						<TableCell
-							colSpan={4}
+							colSpan={5}
 							className="text-center text-muted-foreground"
 						>
 							No stock data found
@@ -64,6 +68,20 @@ export function StockLevelTable({ levels }: StockLevelTableProps) {
 											? "Low Stock"
 											: "In Stock"}
 								</Badge>
+							</TableCell>
+							<TableCell>
+								<Button
+									variant="ghost"
+									size="icon"
+									onClick={() =>
+										onAdjust({
+											id: level.productId,
+											name: level.productName,
+										})
+									}
+								>
+									<Wrench className="size-4" />
+								</Button>
 							</TableCell>
 						</TableRow>
 					))

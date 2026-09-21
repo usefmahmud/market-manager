@@ -70,7 +70,10 @@ export function useCheckout() {
 	const total = subtotal;
 
 	const checkout = useCallback(
-		(paymentMethod: "cash" | "card" | "mixed") => {
+		(
+			paymentMethod: "cash" | "card" | "mixed",
+			split?: { cash: number; card: number },
+		) => {
 			if (!user || cart.length === 0) return;
 
 			const items: CheckoutItemInput[] = cart.map((item) => ({
@@ -88,6 +91,8 @@ export function useCheckout() {
 						subtotal: subtotal.toFixed(2),
 						tax: "0.00",
 						total: total.toFixed(2),
+						cashAmount: split?.cash,
+						cardAmount: split?.card,
 					},
 				},
 				{

@@ -13,6 +13,8 @@ export const checkoutSchema = z.object({
 	subtotal: z.string().regex(/^\d+(\.\d{1,2})?$/),
 	tax: z.string().regex(/^\d+(\.\d{1,2})?$/),
 	total: z.string().regex(/^\d+(\.\d{1,2})?$/),
+	cashAmount: z.number().optional(),
+	cardAmount: z.number().optional(),
 });
 
 export type CheckoutItemInput = z.infer<typeof checkoutItemSchema>;

@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { and, desc, eq, gte, isNull, lte, sql } from "drizzle-orm";
 import { db } from "#/db";
-import { invoiceItems, invoices, products, users } from "#/db/schema";
+import { invoiceItems, invoices, products, stockAdjustments, users } from "#/db/schema";
 import { invoiceFilterSchema } from "./types";
 
 export const getInvoicesFn = createServerFn({ method: "GET" })
@@ -102,11 +102,29 @@ export const voidInvoiceFn = createServerFn({ method: "POST" })
 			throw new Error("Invoice not found");
 		}
 
-		// Mark as voided instead of deleting to preserve audit trail
 		await db
 			.update(invoices)
 			.set({ voidedAt: new Date() })
 			.where(eq(invoices.id, data.id));
+
+		const items = await db
+			.select()
+			.from(invoiceItems)
+			.where(eq(invoiceItems.invoiceId, data.id));
+
+		for (const item of items) {
+			await db.insert(stockAdjustments).values({
+				productId: item.productId,
+				quantityChange: item.quantity,
+				reason: `Void - ${invoice[0].invoiceNumber}`,
+				adjustedBy: invoice[0].userId,
+			});
+
+			await db
+				.update(products)
+				.set({ updatedAt: new Date() })
+				.where(eq(products.id, item.productId));
+		}
 
 		return { success: true };
 	});

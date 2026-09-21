@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
 	adjustStockFn,
 	getStockHistoryFn,
@@ -28,6 +29,10 @@ export function useAdjustStock() {
 		mutationFn: (data: AdjustStockInput) => adjustStockFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["stock"] });
+			toast.success("Stock adjusted");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to adjust stock");
 		},
 	});
 }

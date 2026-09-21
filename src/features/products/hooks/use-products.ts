@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
 	createProductFn,
 	deleteProductFn,
@@ -31,6 +32,10 @@ export function useCreateProduct() {
 		mutationFn: (data: CreateProductInput) => createProductFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["products"] });
+			toast.success("Product created");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to create product");
 		},
 	});
 }
@@ -41,6 +46,10 @@ export function useUpdateProduct() {
 		mutationFn: (data: UpdateProductInput) => updateProductFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["products"] });
+			toast.success("Product updated");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to update product");
 		},
 	});
 }
@@ -51,6 +60,10 @@ export function useDeleteProduct() {
 		mutationFn: (data: { id: number }) => deleteProductFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["products"] });
+			toast.success("Product deleted");
+		},
+		onError: (error: Error) => {
+			toast.error(error.message || "Failed to delete product");
 		},
 	});
 }

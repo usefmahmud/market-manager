@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { type CreateUserInput, createUserSchema } from "#/features/users/types";
+import { z } from "zod";
 import { Button } from "#/lib/components/ui/button";
 import {
 	Dialog,
@@ -31,6 +31,20 @@ interface UserDialogProps {
 	onOpenChange: (open: boolean) => void;
 }
 
+const createUserFormSchema = z.object({
+	name: z.string().min(2, "Name must be at least 2 characters"),
+	email: z.string().email("Invalid email address"),
+	password: z.string().min(6, "Password must be at least 6 characters"),
+	role: z.enum(["admin", "cashier"]).default("cashier"),
+});
+
+const updateUserFormSchema = z.object({
+	name: z.string().min(2, "Name must be at least 2 characters"),
+	email: z.string().email("Invalid email address"),
+	password: z.string().min(6, "Password must be at least 6 characters").optional().or(z.literal("")),
+	role: z.enum(["admin", "cashier"]).default("cashier"),
+});
+
 type FormValues = {
 	name: string;
 	email: string;
@@ -44,7 +58,7 @@ export function UserDialog({ user, open, onOpenChange }: UserDialogProps) {
 	const updateUser = useUpdateUser();
 
 	const form = useForm<FormValues>({
-		resolver: zodResolver(createUserSchema) as any,
+		resolver: zodResolver(isEditing ? updateUserFormSchema : createUserFormSchema) as any,
 		defaultValues: {
 			name: user?.name ?? "",
 			email: user?.email ?? "",
@@ -65,25 +79,37 @@ export function UserDialog({ user, open, onOpenChange }: UserDialogProps) {
 	}, [open, user, form]);
 
 	const onSubmit = (data: FormValues) => {
-		const submitData: CreateUserInput = {
-			name: data.name,
-			email: data.email,
-			password: data.password,
-			role: data.role ?? "cashier",
-		};
 		if (isEditing) {
-			const updateData = {
+			const updateData: {
+				id: number;
+				name: string;
+				email: string;
+				role: "admin" | "cashier";
+				password?: string;
+			} = {
 				id: user.id,
-				...submitData,
-				...(data.password ? { password: data.password } : {}),
+				name: data.name,
+				email: data.email,
+				role: data.role ?? "cashier",
 			};
+			if (data.password) {
+				updateData.password = data.password;
+			}
 			updateUser.mutate(updateData, {
 				onSettled: () => onOpenChange(false),
 			});
 		} else {
-			createUser.mutate(submitData, {
-				onSettled: () => onOpenChange(false),
-			});
+			createUser.mutate(
+				{
+					name: data.name,
+					email: data.email,
+					password: data.password,
+					role: data.role ?? "cashier",
+				},
+				{
+					onSettled: () => onOpenChange(false),
+				},
+			);
 		}
 	};
 

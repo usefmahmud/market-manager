@@ -1,10 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Wrench } from "lucide-react";
 import { useState } from "react";
 import { StockAdjustmentDialog } from "#/features/stock/components/stock-adjustment-dialog";
 import { StockLevelTable } from "#/features/stock/components/stock-level-table";
 import { useStockLevels } from "#/features/stock/hooks/use-stock";
-import { Button } from "#/lib/components/ui/button";
 import { Skeleton } from "#/lib/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/stock/")({
@@ -22,19 +20,6 @@ function StockPage() {
 		<div className="space-y-6 p-6">
 			<div className="flex items-center justify-between">
 				<h1 className="text-3xl font-bold">Stock Levels</h1>
-				<Button
-					onClick={() => {
-						if (levels && levels.length > 0) {
-							setAdjustingProduct({
-								id: levels[0].productId,
-								name: levels[0].productName,
-							});
-						}
-					}}
-				>
-					<Wrench className="mr-2 size-4" />
-					Adjust Stock
-				</Button>
 			</div>
 
 			{isLoading ? (
@@ -44,7 +29,10 @@ function StockPage() {
 					))}
 				</div>
 			) : (
-				<StockLevelTable levels={levels ?? []} />
+				<StockLevelTable
+					levels={levels ?? []}
+					onAdjust={setAdjustingProduct}
+				/>
 			)}
 
 			{adjustingProduct && (

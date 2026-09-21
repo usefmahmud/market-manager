@@ -62,6 +62,9 @@ export const registerFn = createServerFn({ method: "POST" })
 			role: newUser.role,
 		});
 
+		const maxAge = 60 * 60 * 24 * 7; // 7 days
+		setCookie("session", token, { path: "/", maxAge });
+
 		return {
 			token,
 			user: {

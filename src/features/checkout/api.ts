@@ -61,12 +61,17 @@ export const createInvoiceFn = createServerFn({ method: "POST" })
 
 		const invoiceNumber = await generateInvoiceNumber();
 
+		let paymentMethod: string = data.paymentMethod;
+		if (data.paymentMethod === "mixed" && data.cashAmount != null && data.cardAmount != null) {
+			paymentMethod = `mixed:${data.cashAmount.toFixed(2)}:${data.cardAmount.toFixed(2)}`;
+		}
+
 		const newInvoice = await db
 			.insert(invoices)
 			.values({
 				invoiceNumber,
 				userId: data.userId,
-				paymentMethod: data.paymentMethod,
+				paymentMethod,
 				subtotal: data.subtotal,
 				tax: "0.00",
 				total: data.total,
