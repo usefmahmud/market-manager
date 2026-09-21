@@ -7,6 +7,8 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
+import { TooltipProvider } from "#/lib/components/ui/tooltip";
+import { SidebarProvider } from "#/lib/components/ui/sidebar";
 import appCss from "../styles.css?url";
 
 interface MyRouterContext {
@@ -44,7 +46,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 				<HeadContent />
 			</head>
 			<body>
-				{children}
+				<TooltipProvider>
+					<SidebarProvider>{children}</SidebarProvider>
+				</TooltipProvider>
 				<TanStackDevtools
 					config={{
 						position: "bottom-right",
