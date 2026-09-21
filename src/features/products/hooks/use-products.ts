@@ -1,11 +1,14 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-	getProductsFn,
 	createProductFn,
-	updateProductFn,
 	deleteProductFn,
+	getProductsFn,
+	updateProductFn,
 } from "#/features/products/api";
-import type { CreateProductInput, UpdateProductInput } from "#/features/products/types";
+import type {
+	CreateProductInput,
+	UpdateProductInput,
+} from "#/features/products/types";
 
 interface ProductFilters {
 	search?: string;

@@ -1,8 +1,8 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-	getStockLevelsFn,
 	adjustStockFn,
 	getStockHistoryFn,
+	getStockLevelsFn,
 } from "#/features/stock/api";
 import type { AdjustStockInput } from "#/features/stock/types";
 

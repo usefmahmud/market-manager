@@ -1,18 +1,17 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
-	createProductSchema,
 	type CreateProductInput,
+	createProductSchema,
 } from "#/features/products/types";
-import { useCreateProduct, useUpdateProduct } from "../hooks/use-products";
+import { Button } from "#/lib/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "#/lib/components/ui/dialog";
-import { Button } from "#/lib/components/ui/button";
 import { Input } from "#/lib/components/ui/input";
 import { Label } from "#/lib/components/ui/label";
 import {
@@ -22,6 +21,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "#/lib/components/ui/select";
+import { useCreateProduct, useUpdateProduct } from "../hooks/use-products";
 
 interface ProductDialogProps {
 	product?: {
@@ -132,7 +132,11 @@ export function ProductDialog({
 						</div>
 						<div className="space-y-2">
 							<Label htmlFor="price">Price</Label>
-							<Input id="price" {...form.register("price")} placeholder="0.00" />
+							<Input
+								id="price"
+								{...form.register("price")}
+								placeholder="0.00"
+							/>
 							{form.formState.errors.price && (
 								<p className="text-sm text-destructive">
 									{form.formState.errors.price.message}

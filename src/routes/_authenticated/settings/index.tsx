@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useUsers } from "#/features/users/hooks/use-users";
-import { UserTable } from "#/features/users/components/user-table";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { UserDialog } from "#/features/users/components/user-dialog";
+import { UserTable } from "#/features/users/components/user-table";
+import { useUsers } from "#/features/users/hooks/use-users";
 import { Button } from "#/lib/components/ui/button";
 import { Skeleton } from "#/lib/components/ui/skeleton";
-import { Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/settings/")({
 	component: SettingsPage,

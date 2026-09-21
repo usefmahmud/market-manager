@@ -1,20 +1,20 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
-	createCategorySchema,
 	type CreateCategoryInput,
+	createCategorySchema,
 } from "#/features/categories/types";
-import { useCreateCategory, useUpdateCategory } from "../hooks/use-categories";
+import { Button } from "#/lib/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "#/lib/components/ui/dialog";
-import { Button } from "#/lib/components/ui/button";
 import { Input } from "#/lib/components/ui/input";
 import { Label } from "#/lib/components/ui/label";
+import { useCreateCategory, useUpdateCategory } from "../hooks/use-categories";
 
 interface CategoryDialogProps {
 	category?: { id: number; name: string; description: string | null };

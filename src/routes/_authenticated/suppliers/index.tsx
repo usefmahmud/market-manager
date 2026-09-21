@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuppliers } from "#/features/suppliers/hooks/use-suppliers";
-import { SupplierTable } from "#/features/suppliers/components/supplier-table";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { SupplierDialog } from "#/features/suppliers/components/supplier-dialog";
+import { SupplierTable } from "#/features/suppliers/components/supplier-table";
+import { useSuppliers } from "#/features/suppliers/hooks/use-suppliers";
 import { Button } from "#/lib/components/ui/button";
 import { Skeleton } from "#/lib/components/ui/skeleton";
-import { Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/suppliers/")({
 	component: SuppliersPage,

@@ -1,21 +1,21 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
-	adjustStockSchema,
 	type AdjustStockInput,
+	adjustStockSchema,
 } from "#/features/stock/types";
-import { useAdjustStock } from "../hooks/use-stock";
-import { useAuth } from "#/lib/hooks/useAuth";
+import { Button } from "#/lib/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "#/lib/components/ui/dialog";
-import { Button } from "#/lib/components/ui/button";
 import { Input } from "#/lib/components/ui/input";
 import { Label } from "#/lib/components/ui/label";
+import { useAuth } from "#/lib/hooks/useAuth";
+import { useAdjustStock } from "../hooks/use-stock";
 
 interface StockAdjustmentDialogProps {
 	productId: number;

@@ -1,13 +1,13 @@
 import {
+	BarChart,
+	BarChart3,
+	CreditCard,
+	FolderTree,
 	LayoutDashboard,
 	Package,
-	FolderTree,
-	BarChart3,
-	Truck,
 	Receipt,
-	CreditCard,
-	BarChart,
 	Settings,
+	Truck,
 } from "lucide-react";
 
 export interface NavItem {

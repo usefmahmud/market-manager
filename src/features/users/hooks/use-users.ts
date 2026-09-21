@@ -1,9 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-	getUsersFn,
 	createUserFn,
-	updateUserFn,
 	deleteUserFn,
+	getUsersFn,
+	updateUserFn,
 } from "#/features/users/api";
 import type { CreateUserInput, UpdateUserInput } from "#/features/users/types";
 

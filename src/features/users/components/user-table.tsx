@@ -1,14 +1,5 @@
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "#/lib/components/ui/table";
-import { Button } from "#/lib/components/ui/button";
-import { Badge } from "#/lib/components/ui/badge";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -19,7 +10,16 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "#/lib/components/ui/alert-dialog";
-import { Pencil, Trash2 } from "lucide-react";
+import { Badge } from "#/lib/components/ui/badge";
+import { Button } from "#/lib/components/ui/button";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "#/lib/components/ui/table";
 import { useDeleteUser } from "../hooks/use-users";
 import { UserDialog } from "./user-dialog";
 
@@ -61,7 +61,10 @@ export function UserTable({ users }: UserTableProps) {
 				<TableBody>
 					{users.length === 0 ? (
 						<TableRow>
-							<TableCell colSpan={4} className="text-center text-muted-foreground">
+							<TableCell
+								colSpan={4}
+								className="text-center text-muted-foreground"
+							>
 								No users found
 							</TableCell>
 						</TableRow>
@@ -71,7 +74,9 @@ export function UserTable({ users }: UserTableProps) {
 								<TableCell className="font-medium">{user.name}</TableCell>
 								<TableCell>{user.email}</TableCell>
 								<TableCell>
-									<Badge variant={user.role === "admin" ? "default" : "secondary"}>
+									<Badge
+										variant={user.role === "admin" ? "default" : "secondary"}
+									>
 										{user.role}
 									</Badge>
 								</TableCell>

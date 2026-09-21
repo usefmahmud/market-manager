@@ -1,16 +1,12 @@
-import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { ScanBarcode, Search } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { getProductsFn } from "#/features/products/api";
-import { Input } from "#/lib/components/ui/input";
 import { Button } from "#/lib/components/ui/button";
-import { Search, ScanBarcode } from "lucide-react";
+import { Input } from "#/lib/components/ui/input";
 
 interface ProductSearchProps {
-	onAddProduct: (product: {
-		id: number;
-		name: string;
-		price: string;
-	}) => void;
+	onAddProduct: (product: { id: number; name: string; price: string }) => void;
 }
 
 export function ProductSearch({ onAddProduct }: ProductSearchProps) {

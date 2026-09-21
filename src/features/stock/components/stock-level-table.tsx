@@ -1,3 +1,4 @@
+import { Badge } from "#/lib/components/ui/badge";
 import {
 	Table,
 	TableBody,
@@ -6,7 +7,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "#/lib/components/ui/table";
-import { Badge } from "#/lib/components/ui/badge";
 
 interface StockLevel {
 	productId: number;
@@ -33,7 +33,10 @@ export function StockLevelTable({ levels }: StockLevelTableProps) {
 			<TableBody>
 				{levels.length === 0 ? (
 					<TableRow>
-						<TableCell colSpan={4} className="text-center text-muted-foreground">
+						<TableCell
+							colSpan={4}
+							className="text-center text-muted-foreground"
+						>
 							No stock data found
 						</TableCell>
 					</TableRow>

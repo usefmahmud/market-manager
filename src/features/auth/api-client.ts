@@ -1,9 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getCookie, setCookie, deleteCookie } from "@tanstack/react-start/server";
-import { verifySession } from "#/lib/auth";
+import {
+	deleteCookie,
+	getCookie,
+	setCookie,
+} from "@tanstack/react-start/server";
+import { eq } from "drizzle-orm";
 import { db } from "#/db";
 import { users } from "#/db/schema";
-import { eq } from "drizzle-orm";
+import { verifySession } from "#/lib/auth";
 
 export const setSessionCookieFn = createServerFn({ method: "POST" })
 	.validator((input: { token: string }) => input)

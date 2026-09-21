@@ -1,13 +1,11 @@
-import { useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginInput } from "#/features/auth/types";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { loginFn } from "#/features/auth/api";
+import { type LoginInput, loginSchema } from "#/features/auth/types";
 import { Button } from "#/lib/components/ui/button";
-import { Input } from "#/lib/components/ui/input";
-import { Label } from "#/lib/components/ui/label";
 import {
 	Card,
 	CardContent,
@@ -15,6 +13,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "#/lib/components/ui/card";
+import { Input } from "#/lib/components/ui/input";
+import { Label } from "#/lib/components/ui/label";
 
 export function LoginForm() {
 	const navigate = useNavigate();

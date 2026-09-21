@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useCategories } from "#/features/categories/hooks/use-categories";
-import { CategoryTable } from "#/features/categories/components/category-table";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { CategoryDialog } from "#/features/categories/components/category-dialog";
+import { CategoryTable } from "#/features/categories/components/category-table";
+import { useCategories } from "#/features/categories/hooks/use-categories";
 import { Button } from "#/lib/components/ui/button";
 import { Skeleton } from "#/lib/components/ui/skeleton";
-import { Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/categories/")({
 	component: CategoriesPage,

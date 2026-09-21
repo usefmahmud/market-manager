@@ -1,11 +1,14 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-	getCategoriesFn,
 	createCategoryFn,
-	updateCategoryFn,
 	deleteCategoryFn,
+	getCategoriesFn,
+	updateCategoryFn,
 } from "#/features/categories/api";
-import type { CreateCategoryInput, UpdateCategoryInput } from "#/features/categories/types";
+import type {
+	CreateCategoryInput,
+	UpdateCategoryInput,
+} from "#/features/categories/types";
 
 export const categoriesQueryOptions = {
 	queryKey: ["categories"],
@@ -19,8 +22,7 @@ export function useCategories() {
 export function useCreateCategory() {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (data: CreateCategoryInput) =>
-			createCategoryFn({ data }),
+		mutationFn: (data: CreateCategoryInput) => createCategoryFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},
@@ -30,8 +32,7 @@ export function useCreateCategory() {
 export function useUpdateCategory() {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (data: UpdateCategoryInput) =>
-			updateCategoryFn({ data }),
+		mutationFn: (data: UpdateCategoryInput) => updateCategoryFn({ data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["categories"] });
 		},

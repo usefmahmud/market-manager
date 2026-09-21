@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useStockLevels } from "#/features/stock/hooks/use-stock";
-import { StockLevelTable } from "#/features/stock/components/stock-level-table";
+import { Wrench } from "lucide-react";
+import { useState } from "react";
 import { StockAdjustmentDialog } from "#/features/stock/components/stock-adjustment-dialog";
+import { StockLevelTable } from "#/features/stock/components/stock-level-table";
+import { useStockLevels } from "#/features/stock/hooks/use-stock";
 import { Button } from "#/lib/components/ui/button";
 import { Skeleton } from "#/lib/components/ui/skeleton";
-import { Wrench } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/stock/")({
 	component: StockPage,

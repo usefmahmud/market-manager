@@ -1,3 +1,6 @@
+import type { InvoiceDetail as InvoiceDetailType } from "#/features/invoices/types";
+import { Button } from "#/lib/components/ui/button";
+import { Separator } from "#/lib/components/ui/separator";
 import {
 	Table,
 	TableBody,
@@ -6,10 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "#/lib/components/ui/table";
-import { Button } from "#/lib/components/ui/button";
-import { Separator } from "#/lib/components/ui/separator";
 import { useVoidInvoice } from "../hooks/use-invoices";
-import type { InvoiceDetail as InvoiceDetailType } from "#/features/invoices/types";
 
 interface InvoiceDetailProps {
 	invoice: InvoiceDetailType;

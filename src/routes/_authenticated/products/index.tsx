@@ -1,13 +1,13 @@
-import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useProducts } from "#/features/products/hooks/use-products";
+import { Plus, Search } from "lucide-react";
+import { useState } from "react";
 import { useCategories } from "#/features/categories/hooks/use-categories";
-import { ProductTable } from "#/features/products/components/product-table";
 import { ProductDialog } from "#/features/products/components/product-dialog";
+import { ProductTable } from "#/features/products/components/product-table";
+import { useProducts } from "#/features/products/hooks/use-products";
 import { Button } from "#/lib/components/ui/button";
 import { Input } from "#/lib/components/ui/input";
 import { Skeleton } from "#/lib/components/ui/skeleton";
-import { Plus, Search } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/products/")({
 	component: ProductsPage,
@@ -46,10 +46,7 @@ function ProductsPage() {
 					))}
 				</div>
 			) : (
-				<ProductTable
-					products={products ?? []}
-					categories={categories ?? []}
-				/>
+				<ProductTable products={products ?? []} categories={categories ?? []} />
 			)}
 
 			<ProductDialog

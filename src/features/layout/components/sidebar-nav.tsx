@@ -1,10 +1,10 @@
-import { useLocation, Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import {
 	SidebarMenu,
-	SidebarMenuItem,
 	SidebarMenuButton,
+	SidebarMenuItem,
 } from "#/lib/components/ui/sidebar";
-import { navItems, type NavItem } from "../nav-items";
+import { type NavItem, navItems } from "../nav-items";
 
 interface SidebarNavProps {
 	userRole?: string;
@@ -20,7 +20,11 @@ export function SidebarNav({ userRole }: SidebarNavProps) {
 	return (
 		<SidebarMenu>
 			{filteredItems.map((item) => (
-				<SidebarNavItem key={item.href} item={item} pathname={location.pathname} />
+				<SidebarNavItem
+					key={item.href}
+					item={item}
+					pathname={location.pathname}
+				/>
 			))}
 		</SidebarMenu>
 	);
@@ -29,7 +33,10 @@ export function SidebarNav({ userRole }: SidebarNavProps) {
 function SidebarNavItem({
 	item,
 	pathname,
-}: { item: NavItem; pathname: string }) {
+}: {
+	item: NavItem;
+	pathname: string;
+}) {
 	const isActive =
 		item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
 

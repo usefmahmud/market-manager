@@ -1,18 +1,14 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	createUserSchema,
-	type CreateUserInput,
-} from "#/features/users/types";
-import { useCreateUser, useUpdateUser } from "../hooks/use-users";
+import { type CreateUserInput, createUserSchema } from "#/features/users/types";
+import { Button } from "#/lib/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "#/lib/components/ui/dialog";
-import { Button } from "#/lib/components/ui/button";
 import { Input } from "#/lib/components/ui/input";
 import { Label } from "#/lib/components/ui/label";
 import {
@@ -22,6 +18,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "#/lib/components/ui/select";
+import { useCreateUser, useUpdateUser } from "../hooks/use-users";
 
 interface UserDialogProps {
 	user?: {
@@ -96,9 +93,7 @@ export function UserDialog({ user, open, onOpenChange }: UserDialogProps) {
 		<Dialog open={open} onOpenChange={onOpenChange}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>
-						{isEditing ? "Edit User" : "Create User"}
-					</DialogTitle>
+					<DialogTitle>{isEditing ? "Edit User" : "Create User"}</DialogTitle>
 				</DialogHeader>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div className="space-y-2">

@@ -1,3 +1,4 @@
+import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "#/lib/components/ui/button";
 import {
 	Table,
@@ -7,12 +8,11 @@ import {
 	TableHeader,
 	TableRow,
 } from "#/lib/components/ui/table";
-import { Minus, Plus, Trash2 } from "lucide-react";
 import type { CartItem } from "../hooks/use-checkout";
 
 interface CartProps {
 	items: CartItem[];
- onUpdateQuantity: (productId: number, quantity: number) => void;
+	onUpdateQuantity: (productId: number, quantity: number) => void;
 	onClear: () => void;
 }
 

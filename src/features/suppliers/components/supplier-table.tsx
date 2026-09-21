@@ -1,13 +1,5 @@
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "#/lib/components/ui/table";
-import { Button } from "#/lib/components/ui/button";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -18,7 +10,15 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "#/lib/components/ui/alert-dialog";
-import { Pencil, Trash2 } from "lucide-react";
+import { Button } from "#/lib/components/ui/button";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "#/lib/components/ui/table";
 import { useDeleteSupplier } from "../hooks/use-suppliers";
 import { SupplierDialog } from "./supplier-dialog";
 
@@ -37,7 +37,9 @@ interface SupplierTableProps {
 
 export function SupplierTable({ suppliers }: SupplierTableProps) {
 	const [editingSupplier, setEditingSupplier] = useState<Supplier | null>(null);
-	const [deletingSupplier, setDeletingSupplier] = useState<Supplier | null>(null);
+	const [deletingSupplier, setDeletingSupplier] = useState<Supplier | null>(
+		null,
+	);
 	const deleteSupplier = useDeleteSupplier();
 
 	const handleDelete = () => {
@@ -64,7 +66,10 @@ export function SupplierTable({ suppliers }: SupplierTableProps) {
 				<TableBody>
 					{suppliers.length === 0 ? (
 						<TableRow>
-							<TableCell colSpan={6} className="text-center text-muted-foreground">
+							<TableCell
+								colSpan={6}
+								className="text-center text-muted-foreground"
+							>
 								No suppliers found
 							</TableCell>
 						</TableRow>

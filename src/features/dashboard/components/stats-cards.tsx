@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
+import { getInvoicesFn } from "#/features/invoices/api";
 import { getProductsFn } from "#/features/products/api";
 import { getStockLevelsFn } from "#/features/stock/api";
-import { getInvoicesFn } from "#/features/invoices/api";
 import {
 	Card,
 	CardContent,
@@ -32,16 +32,12 @@ export function StatsCards() {
 					);
 				}}
 			</StatsCard>
-			<StatsCard
-				title="Today's Sales"
-				queryKey={["invoices", "today"]}
-			>
+			<StatsCard title="Today's Sales" queryKey={["invoices", "today"]}>
 				{({ data, isLoading }) => {
 					if (isLoading) return <Skeleton className="h-8 w-20" />;
 					const today = new Date().toISOString().split("T")[0];
 					const todayInvoices = (data ?? []).filter(
-						(inv: { createdAt: string }) =>
-							inv.createdAt?.startsWith(today),
+						(inv: { createdAt: string }) => inv.createdAt?.startsWith(today),
 					);
 					return (
 						<div className="text-2xl font-bold">{todayInvoices.length}</div>
@@ -74,9 +70,13 @@ function StatsCard({
 }: {
 	title: string;
 	queryKey: string[];
+// biome-ignore lint/suspicious/noExplicitAny: dynamic data from different queries
 	children: React.ComponentType<{ data: any; isLoading: boolean }>;
 }) {
-	const { data, isLoading } = useQuery({ queryKey, queryFn: () => queryForCard(queryKey) });
+	const { data, isLoading } = useQuery({
+		queryKey,
+		queryFn: () => queryForCard(queryKey),
+	});
 	const Content = children;
 
 	return (

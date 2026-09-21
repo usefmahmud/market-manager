@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useInvoice } from "#/features/invoices/hooks/use-invoices";
 import { InvoiceDetail } from "#/features/invoices/components/invoice-detail";
+import { useInvoice } from "#/features/invoices/hooks/use-invoices";
 import { Skeleton } from "#/lib/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/invoices/$invoiceId")({

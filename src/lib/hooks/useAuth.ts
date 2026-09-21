@@ -1,6 +1,9 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { meFromCookieFn, clearSessionCookieFn } from "#/features/auth/api-client";
+import {
+	clearSessionCookieFn,
+	meFromCookieFn,
+} from "#/features/auth/api-client";
 
 export function useAuth() {
 	const queryClient = useQueryClient();

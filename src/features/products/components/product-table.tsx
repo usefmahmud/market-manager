@@ -1,14 +1,5 @@
+import { Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "#/lib/components/ui/table";
-import { Button } from "#/lib/components/ui/button";
-import { Badge } from "#/lib/components/ui/badge";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -19,7 +10,16 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "#/lib/components/ui/alert-dialog";
-import { Pencil, Trash2 } from "lucide-react";
+import { Badge } from "#/lib/components/ui/badge";
+import { Button } from "#/lib/components/ui/button";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "#/lib/components/ui/table";
 import { useDeleteProduct } from "../hooks/use-products";
 import { ProductDialog } from "./product-dialog";
 
@@ -68,7 +68,10 @@ export function ProductTable({ products, categories }: ProductTableProps) {
 				<TableBody>
 					{products.length === 0 ? (
 						<TableRow>
-							<TableCell colSpan={6} className="text-center text-muted-foreground">
+							<TableCell
+								colSpan={6}
+								className="text-center text-muted-foreground"
+							>
 								No products found
 							</TableCell>
 						</TableRow>
@@ -85,7 +88,9 @@ export function ProductTable({ products, categories }: ProductTableProps) {
 									</Badge>
 								</TableCell>
 								<TableCell>${Number(product.price).toFixed(2)}</TableCell>
-								<TableCell className="capitalize">{product.unit || "piece"}</TableCell>
+								<TableCell className="capitalize">
+									{product.unit || "piece"}
+								</TableCell>
 								<TableCell>
 									<div className="flex gap-1">
 										<Button

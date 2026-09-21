@@ -1,16 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useCheckout } from "#/features/checkout/hooks/use-checkout";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, Banknote, CreditCard, Wallet } from "lucide-react";
 import { Cart } from "#/features/checkout/components/cart";
 import { ProductSearch } from "#/features/checkout/components/product-search";
+import { useCheckout } from "#/features/checkout/hooks/use-checkout";
 import { Button } from "#/lib/components/ui/button";
 import { Separator } from "#/lib/components/ui/separator";
-import { useNavigate } from "@tanstack/react-router";
-import {
-	CreditCard,
-	Banknote,
-	Wallet,
-	ArrowLeft,
-} from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/checkout/")({
 	component: CheckoutPage,
@@ -43,7 +37,9 @@ function CheckoutPage() {
 						<ArrowLeft className="size-4" />
 					</Button>
 					<h1 className="text-xl font-bold">Checkout</h1>
-					<span className="text-sm text-muted-foreground">(F2 to focus search)</span>
+					<span className="text-sm text-muted-foreground">
+						(F2 to focus search)
+					</span>
 				</div>
 				<div className="flex-1 overflow-hidden p-4">
 					<ProductSearch onAddProduct={addToCart} />

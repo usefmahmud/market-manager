@@ -1,11 +1,14 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-	getSuppliersFn,
 	createSupplierFn,
-	updateSupplierFn,
 	deleteSupplierFn,
+	getSuppliersFn,
+	updateSupplierFn,
 } from "#/features/suppliers/api";
-import type { CreateSupplierInput, UpdateSupplierInput } from "#/features/suppliers/types";
+import type {
+	CreateSupplierInput,
+	UpdateSupplierInput,
+} from "#/features/suppliers/types";
 
 export const suppliersQueryOptions = {
 	queryKey: ["suppliers"],

@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import type { InvoiceListItem } from "#/features/invoices/types";
+import { Badge } from "#/lib/components/ui/badge";
 import {
 	Table,
 	TableBody,
@@ -7,8 +9,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "#/lib/components/ui/table";
-import { Badge } from "#/lib/components/ui/badge";
-import type { InvoiceListItem } from "#/features/invoices/types";
 
 interface InvoiceTableProps {
 	invoices: InvoiceListItem[];
@@ -31,7 +31,10 @@ export function InvoiceTable({ invoices }: InvoiceTableProps) {
 			<TableBody>
 				{invoices.length === 0 ? (
 					<TableRow>
-						<TableCell colSpan={7} className="text-center text-muted-foreground">
+						<TableCell
+							colSpan={7}
+							className="text-center text-muted-foreground"
+						>
 							No invoices found
 						</TableCell>
 					</TableRow>

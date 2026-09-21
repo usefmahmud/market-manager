@@ -1,20 +1,20 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
-	createSupplierSchema,
 	type CreateSupplierInput,
+	createSupplierSchema,
 } from "#/features/suppliers/types";
-import { useCreateSupplier, useUpdateSupplier } from "../hooks/use-suppliers";
+import { Button } from "#/lib/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 } from "#/lib/components/ui/dialog";
-import { Button } from "#/lib/components/ui/button";
 import { Input } from "#/lib/components/ui/input";
 import { Label } from "#/lib/components/ui/label";
+import { useCreateSupplier, useUpdateSupplier } from "../hooks/use-suppliers";
 
 interface SupplierDialogProps {
 	supplier?: {
