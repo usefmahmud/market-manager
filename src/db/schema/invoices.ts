@@ -19,6 +19,7 @@ export const invoices = pgTable("invoices", {
 	subtotal: decimal("subtotal", { precision: 10, scale: 2 }).notNull(),
 	tax: decimal("tax", { precision: 10, scale: 2 }).notNull(),
 	total: decimal("total", { precision: 10, scale: 2 }).notNull(),
+	voidedAt: timestamp("voided_at"),
 	createdAt: timestamp("created_at").defaultNow(),
 });
 

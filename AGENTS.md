@@ -12,6 +12,8 @@ Single-supermarket stock management app. Not multi-tenant.
 | Data tables | TanStack Table |
 | ORM | Drizzle ORM |
 | Database | PostgreSQL (Supabase) |
+| Validation | Zod |
+| Auth | Cookie-based sessions (JWT + httpOnly) |
 | UI | shadcn/ui + Tailwind CSS v4 |
 | Linting | Biome |
 | Package manager | Bun |
@@ -79,6 +81,7 @@ src/
 │
 ├── lib/                    # Shared utilities + UI
 │   ├── utils.ts            # cn(), format helpers, etc.
+│   ├── auth.ts             # Session helpers (create, verify, cookie)
 │   ├── hooks/              # Shared hooks (useDebounce, etc.)
 │   └── components/         # Shared/reusable UI components
 │
@@ -114,34 +117,80 @@ features/products/
 ├── api.ts              # Server functions + query/mutation helpers
 │   # export getProducts, createProduct, updateProduct, deleteProduct
 │   # export queryOptions for TanStack Query
-└── types.ts            # TypeScript types/interfaces
+└── types.ts            # Zod schemas + TypeScript types
+    # export productSchema, createProductSchema, updateProductSchema
     # export Product, ProductInsert, ProductUpdate
 ```
 
-### `api.ts` pattern
+### `types.ts` pattern (Zod schemas)
+
+```typescript
+import { z } from 'zod'
+
+export const productSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  barcode: z.string().optional(),
+  categoryId: z.number().nullable().optional(),
+  price: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Invalid price'),
+  unit: z.enum(['piece', 'kg', 'liter']).default('piece'),
+  description: z.string().optional(),
+})
+
+export const createProductSchema = productSchema
+
+export const updateProductSchema = z.object({
+  id: z.number(),
+  ...productSchema.partial(),
+})
+
+export type CreateProductInput = z.infer<typeof createProductSchema>
+export type UpdateProductInput = z.infer<typeof updateProductSchema>
+
+export interface Product {
+  id: number
+  name: string
+  barcode: string | null
+  categoryId: number | null
+  price: string
+  unit: string | null
+  description: string | null
+  image: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
+}
+```
+
+### `api.ts` pattern (Server functions with Zod validation)
 
 ```typescript
 import { createServerFn } from '@tanstack/react-start'
-import { queryOptions } from '@tanstack/react-query'
+import { eq, desc } from 'drizzle-orm'
 import { db } from '#/db'
 import { products } from '#/db/schema'
+import { createProductSchema, updateProductSchema } from './types'
 
-// Server function for fetching data
-const getProductsFn = createServerFn({ method: 'GET' }).handler(async () => {
-  return db.select().from(products)
-})
+export const getProductsFn = createServerFn({ method: 'GET' })
+  .handler(async () => {
+    return db.select().from(products).orderBy(desc(products.createdAt))
+  })
 
-// Query options for TanStack Query
-export const productsQueryOptions = queryOptions({
-  queryKey: ['products'],
-  queryFn: () => getProductsFn(),
-})
-
-// Server function for mutations
 export const createProductFn = createServerFn({ method: 'POST' })
-  .validator((data: ProductInsert) => data)
+  .validator(createProductSchema)
   .handler(async ({ data }) => {
     return db.insert(products).values(data).returning()
+  })
+
+export const updateProductFn = createServerFn({ method: 'POST' })
+  .validator(updateProductSchema)
+  .handler(async ({ data }) => {
+    const { id, ...updates } = data
+    return db.update(products).set(updates).where(eq(products.id, id)).returning()
+  })
+
+export const deleteProductFn = createServerFn({ method: 'POST' })
+  .validator((input: { id: number }) => input)
+  .handler(async ({ data }) => {
+    return db.delete(products).where(eq(products.id, data.id)).returning()
   })
 ```
 
@@ -384,13 +433,46 @@ pnpm dlx shadcn@latest add <component>
 
 Component lands in `src/lib/components/ui/`. Import from there.
 
+## Auth Conventions
+
+### Session management
+
+- Cookie-based sessions using JWT in httpOnly cookies
+- Session helpers in `src/lib/auth.ts`
+- Cookie name: `session`
+- Session payload: `{ userId, email, role }`
+- JWT secret: `SESSION_SECRET` env var (fallback to dev secret)
+
+### Auth server functions
+
+```typescript
+// src/features/auth/api.ts
+import { createServerFn } from '@tanstack/react-start'
+import { loginSchema } from './types'
+
+export const loginFn = createServerFn({ method: 'POST' })
+  .validator(loginSchema)
+  .handler(async ({ data }) => {
+    // data.email, data.password validated by Zod
+    // Return { token, user } on success
+  })
+```
+
+### Password hashing
+
+- Use `bcryptjs` for password hashing
+- Hash with salt rounds = 10
+- Never store plain text passwords
+
 ## Environment Variables
 
 `.env.local`:
 
 ```
 DATABASE_URL=postgresql://...
+SESSION_SECRET=your-secret-key
 ```
 
 - `DATABASE_URL` — Supabase PostgreSQL connection string
+- `SESSION_SECRET` — JWT signing secret for sessions
 - `VITE_` prefix for client-exposed vars (avoid for secrets)
