@@ -12,3 +12,4 @@ dist-ssr
 __unconfig*
 todos.json
 .opencode/skills/ui-ux-pro-max/
+__pycache__/
