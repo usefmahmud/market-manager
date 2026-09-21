@@ -74,7 +74,14 @@ export function useCheckout() {
 			paymentMethod: "cash" | "card" | "mixed",
 			split?: { cash: number; card: number },
 		) => {
-			if (!user || cart.length === 0) return;
+			if (!user) {
+				toast.error("You must be logged in to checkout");
+				return;
+			}
+			if (cart.length === 0) {
+				toast.error("Cart is empty");
+				return;
+			}
 
 			const items: CheckoutItemInput[] = cart.map((item) => ({
 				productId: item.productId,

@@ -1,24 +1,15 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import {
-	clearSessionCookieFn,
-	meFromCookieFn,
-} from "#/features/auth/api-client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigate, useRouteContext } from "@tanstack/react-router";
+import { clearSessionCookieFn } from "#/features/auth/api-client";
 
 export function useAuth() {
 	const queryClient = useQueryClient();
 	const navigate = useNavigate();
+	const ctx = useRouteContext({ strict: false }) as {
+		user?: { id: number; name: string; email: string; role: string };
+	};
 
-	const {
-		data: user,
-		isLoading,
-		error,
-	} = useQuery({
-		queryKey: ["auth", "me"],
-		queryFn: () => meFromCookieFn(),
-		retry: false,
-		staleTime: 5 * 60 * 1000,
-	});
+	const user = ctx?.user ?? null;
 
 	const logout = useMutation({
 		mutationFn: async () => {
@@ -30,12 +21,10 @@ export function useAuth() {
 		},
 	});
 
-	const isAuthenticated = !isLoading && !error && !!user;
-
 	return {
-		user: user ?? null,
-		isLoading,
-		isAuthenticated,
+		user,
+		isLoading: false,
+		isAuthenticated: !!user,
 		logout: () => logout.mutate(),
 	};
 }

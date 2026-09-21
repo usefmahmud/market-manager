@@ -4,10 +4,15 @@ import { AppSidebar } from "#/features/layout/components/app-sidebar";
 import { SidebarInset } from "#/lib/components/ui/sidebar";
 import { Skeleton } from "#/lib/components/ui/skeleton";
 
+interface AuthContext {
+	user: { id: number; name: string; email: string; role: string };
+}
+
 export const Route = createFileRoute("/_authenticated")({
-	beforeLoad: async () => {
+	beforeLoad: async (): Promise<AuthContext> => {
 		try {
-			await meFromCookieFn();
+			const user = await meFromCookieFn();
+			return { user };
 		} catch {
 			throw redirect({ to: "/login" });
 		}
