@@ -14,6 +14,8 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedCategoriesIndexRouteImport } from './routes/_authenticated/categories/index'
 import { Route as AuthenticatedCheckoutIndexRouteImport } from './routes/_authenticated/checkout/index'
+import { Route as AuthenticatedInvoicesIndexRouteImport } from './routes/_authenticated/invoices/index'
+import { Route as AuthenticatedInvoicesInvoiceIdRouteImport } from './routes/_authenticated/invoices/$invoiceId'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
 import { Route as AuthenticatedStockIndexRouteImport } from './routes/_authenticated/stock/index'
 import { Route as AuthenticatedSuppliersIndexRouteImport } from './routes/_authenticated/suppliers/index'
@@ -44,6 +46,18 @@ const AuthenticatedCheckoutIndexRoute =
     path: '/checkout/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedInvoicesIndexRoute =
+  AuthenticatedInvoicesIndexRouteImport.update({
+    id: '/invoices/',
+    path: '/invoices/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedInvoicesInvoiceIdRoute =
+  AuthenticatedInvoicesInvoiceIdRouteImport.update({
+    id: '/invoices/$invoiceId',
+    path: '/invoices/$invoiceId',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedProductsIndexRoute =
   AuthenticatedProductsIndexRouteImport.update({
     id: '/products/',
@@ -65,8 +79,10 @@ const AuthenticatedSuppliersIndexRoute =
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
+  '/invoices/$invoiceId': typeof AuthenticatedInvoicesInvoiceIdRoute
   '/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/checkout/': typeof AuthenticatedCheckoutIndexRoute
+  '/invoices/': typeof AuthenticatedInvoicesIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
   '/stock/': typeof AuthenticatedStockIndexRoute
   '/suppliers/': typeof AuthenticatedSuppliersIndexRoute
@@ -74,8 +90,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexRoute
+  '/invoices/$invoiceId': typeof AuthenticatedInvoicesInvoiceIdRoute
   '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/checkout': typeof AuthenticatedCheckoutIndexRoute
+  '/invoices': typeof AuthenticatedInvoicesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
   '/stock': typeof AuthenticatedStockIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
@@ -85,8 +103,10 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/invoices/$invoiceId': typeof AuthenticatedInvoicesInvoiceIdRoute
   '/_authenticated/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/_authenticated/checkout/': typeof AuthenticatedCheckoutIndexRoute
+  '/_authenticated/invoices/': typeof AuthenticatedInvoicesIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
   '/_authenticated/stock/': typeof AuthenticatedStockIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
@@ -96,8 +116,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/login'
+    | '/invoices/$invoiceId'
     | '/categories/'
     | '/checkout/'
+    | '/invoices/'
     | '/products/'
     | '/stock/'
     | '/suppliers/'
@@ -105,8 +127,10 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/'
+    | '/invoices/$invoiceId'
     | '/categories'
     | '/checkout'
+    | '/invoices'
     | '/products'
     | '/stock'
     | '/suppliers'
@@ -115,8 +139,10 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/_authenticated/'
+    | '/_authenticated/invoices/$invoiceId'
     | '/_authenticated/categories/'
     | '/_authenticated/checkout/'
+    | '/_authenticated/invoices/'
     | '/_authenticated/products/'
     | '/_authenticated/stock/'
     | '/_authenticated/suppliers/'
@@ -164,6 +190,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCheckoutIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/invoices/': {
+      id: '/_authenticated/invoices/'
+      path: '/invoices'
+      fullPath: '/invoices/'
+      preLoaderRoute: typeof AuthenticatedInvoicesIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/invoices/$invoiceId': {
+      id: '/_authenticated/invoices/$invoiceId'
+      path: '/invoices/$invoiceId'
+      fullPath: '/invoices/$invoiceId'
+      preLoaderRoute: typeof AuthenticatedInvoicesInvoiceIdRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/products/': {
       id: '/_authenticated/products/'
       path: '/products'
@@ -190,8 +230,10 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedInvoicesInvoiceIdRoute: typeof AuthenticatedInvoicesInvoiceIdRoute
   AuthenticatedCategoriesIndexRoute: typeof AuthenticatedCategoriesIndexRoute
   AuthenticatedCheckoutIndexRoute: typeof AuthenticatedCheckoutIndexRoute
+  AuthenticatedInvoicesIndexRoute: typeof AuthenticatedInvoicesIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
   AuthenticatedStockIndexRoute: typeof AuthenticatedStockIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
@@ -199,8 +241,10 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedInvoicesInvoiceIdRoute: AuthenticatedInvoicesInvoiceIdRoute,
   AuthenticatedCategoriesIndexRoute: AuthenticatedCategoriesIndexRoute,
   AuthenticatedCheckoutIndexRoute: AuthenticatedCheckoutIndexRoute,
+  AuthenticatedInvoicesIndexRoute: AuthenticatedInvoicesIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
   AuthenticatedStockIndexRoute: AuthenticatedStockIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
