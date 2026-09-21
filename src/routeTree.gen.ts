@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedCategoriesIndexRouteImport } from './routes/_authenticated/categories/index'
 import { Route as AuthenticatedProductsIndexRouteImport } from './routes/_authenticated/products/index'
+import { Route as AuthenticatedStockIndexRouteImport } from './routes/_authenticated/stock/index'
 import { Route as AuthenticatedSuppliersIndexRouteImport } from './routes/_authenticated/suppliers/index'
 
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
@@ -42,6 +43,11 @@ const AuthenticatedProductsIndexRoute =
     path: '/products/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedStockIndexRoute = AuthenticatedStockIndexRouteImport.update({
+  id: '/stock/',
+  path: '/stock/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedSuppliersIndexRoute =
   AuthenticatedSuppliersIndexRouteImport.update({
     id: '/suppliers/',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/products/': typeof AuthenticatedProductsIndexRoute
+  '/stock/': typeof AuthenticatedStockIndexRoute
   '/suppliers/': typeof AuthenticatedSuppliersIndexRoute
 }
 export interface FileRoutesByTo {
@@ -61,6 +68,7 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/categories': typeof AuthenticatedCategoriesIndexRoute
   '/products': typeof AuthenticatedProductsIndexRoute
+  '/stock': typeof AuthenticatedStockIndexRoute
   '/suppliers': typeof AuthenticatedSuppliersIndexRoute
 }
 export interface FileRoutesById {
@@ -70,13 +78,15 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/categories/': typeof AuthenticatedCategoriesIndexRoute
   '/_authenticated/products/': typeof AuthenticatedProductsIndexRoute
+  '/_authenticated/stock/': typeof AuthenticatedStockIndexRoute
   '/_authenticated/suppliers/': typeof AuthenticatedSuppliersIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/categories/' | '/products/' | '/suppliers/'
+  fullPaths:
+    '/' | '/login' | '/categories/' | '/products/' | '/stock/' | '/suppliers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/categories' | '/products' | '/suppliers'
+  to: '/login' | '/' | '/categories' | '/products' | '/stock' | '/suppliers'
   id:
     | '__root__'
     | '/_authenticated'
@@ -84,6 +94,7 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/categories/'
     | '/_authenticated/products/'
+    | '/_authenticated/stock/'
     | '/_authenticated/suppliers/'
   fileRoutesById: FileRoutesById
 }
@@ -129,6 +140,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProductsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/stock/': {
+      id: '/_authenticated/stock/'
+      path: '/stock'
+      fullPath: '/stock/'
+      preLoaderRoute: typeof AuthenticatedStockIndexRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/suppliers/': {
       id: '/_authenticated/suppliers/'
       path: '/suppliers'
@@ -143,6 +161,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedCategoriesIndexRoute: typeof AuthenticatedCategoriesIndexRoute
   AuthenticatedProductsIndexRoute: typeof AuthenticatedProductsIndexRoute
+  AuthenticatedStockIndexRoute: typeof AuthenticatedStockIndexRoute
   AuthenticatedSuppliersIndexRoute: typeof AuthenticatedSuppliersIndexRoute
 }
 
@@ -150,6 +169,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedCategoriesIndexRoute: AuthenticatedCategoriesIndexRoute,
   AuthenticatedProductsIndexRoute: AuthenticatedProductsIndexRoute,
+  AuthenticatedStockIndexRoute: AuthenticatedStockIndexRoute,
   AuthenticatedSuppliersIndexRoute: AuthenticatedSuppliersIndexRoute,
 }
 
