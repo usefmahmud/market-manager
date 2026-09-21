@@ -37,8 +37,11 @@ export function StatsCards() {
 				{({ data, isLoading }) => {
 					if (isLoading) return <Skeleton className="h-8 w-20" />;
 					const today = new Date().toISOString().split("T")[0];
-					const todayInvoices = (Array.isArray(data) ? data : []).filter(
-						(inv: { createdAt: string }) => inv.createdAt?.startsWith(today),
+						const todayInvoices = (Array.isArray(data) ? data : []).filter(
+						(inv: { createdAt: Date | string }) => {
+							const date = inv.createdAt instanceof Date ? inv.createdAt : new Date(inv.createdAt);
+							return date.toISOString().startsWith(today);
+						},
 					);
 					return (
 						<div className="text-2xl font-bold">{todayInvoices.length}</div>
