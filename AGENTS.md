@@ -334,6 +334,7 @@ bun run check      # Lint + format
 ### TypeScript
 
 - Strict mode enabled
+- **Never use `any` type** — use `unknown`, generics, or proper types instead
 - Use inferred types from Drizzle schemas
 - Prefer `interface` for object shapes
 - Export types from `types.ts` files
