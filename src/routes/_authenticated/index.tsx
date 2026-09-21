@@ -1,16 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { StatsCards } from "#/features/dashboard/components/stats-cards";
 
 export const Route = createFileRoute("/_authenticated/")({
-	component: Home,
+	component: DashboardPage,
 });
 
-function Home() {
+function DashboardPage() {
 	return (
-		<div className="p-8">
-			<h1 className="text-4xl font-bold">Welcome to Market Manager</h1>
-			<p className="mt-4 text-lg">
-				Navigate using the sidebar to manage your inventory.
-			</p>
+		<div className="space-y-6 p-6">
+			<h1 className="text-3xl font-bold">Dashboard</h1>
+			<StatsCards />
 		</div>
 	);
 }
