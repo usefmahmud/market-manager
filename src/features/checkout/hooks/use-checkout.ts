@@ -1,5 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useState } from "react";
+import { toast } from "sonner";
 import { createInvoiceFn } from "#/features/checkout/api";
 import type { CheckoutItemInput } from "#/features/checkout/types";
 import { useAuth } from "#/lib/hooks/useAuth";
@@ -13,6 +15,7 @@ export interface CartItem {
 
 export function useCheckout() {
 	const { user } = useAuth();
+	const navigate = useNavigate();
 	const [cart, setCart] = useState<CartItem[]>([]);
 
 	const createInvoice = useMutation({
@@ -64,8 +67,7 @@ export function useCheckout() {
 		(sum, item) => sum + Number(item.price) * item.quantity,
 		0,
 	);
-	const tax = subtotal * 0.1; // 10% tax
-	const total = subtotal + tax;
+	const total = subtotal;
 
 	const checkout = useCallback(
 		(paymentMethod: "cash" | "card" | "mixed") => {
@@ -84,18 +86,26 @@ export function useCheckout() {
 						paymentMethod,
 						items,
 						subtotal: subtotal.toFixed(2),
-						tax: tax.toFixed(2),
+						tax: "0.00",
 						total: total.toFixed(2),
 					},
 				},
 				{
-					onSuccess: () => {
+					onSuccess: (result) => {
+						toast.success("Payment processed!");
 						setCart([]);
+						navigate({
+							to: "/invoices/$invoiceId",
+							params: { invoiceId: result.invoice.id.toString() },
+						});
+					},
+					onError: (error) => {
+						toast.error(error.message || "Payment failed");
 					},
 				},
 			);
 		},
-		[user, cart, subtotal, tax, total, createInvoice],
+		[user, cart, subtotal, total, createInvoice, navigate],
 	);
 
 	return {
@@ -104,7 +114,6 @@ export function useCheckout() {
 		updateQuantity,
 		clearCart,
 		subtotal,
-		tax,
 		total,
 		checkout,
 		isCheckingOut: createInvoice.isPending,

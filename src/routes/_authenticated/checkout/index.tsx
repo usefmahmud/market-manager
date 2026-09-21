@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, Banknote, CreditCard, Wallet } from "lucide-react";
+import { useState } from "react";
 import { Cart } from "#/features/checkout/components/cart";
+import { MixedPaymentDialog } from "#/features/checkout/components/mixed-payment-dialog";
 import { ProductSearch } from "#/features/checkout/components/product-search";
 import { useCheckout } from "#/features/checkout/hooks/use-checkout";
 import { Button } from "#/lib/components/ui/button";
-import { Separator } from "#/lib/components/ui/separator";
 
 export const Route = createFileRoute("/_authenticated/checkout/")({
 	component: CheckoutPage,
@@ -12,13 +13,12 @@ export const Route = createFileRoute("/_authenticated/checkout/")({
 
 function CheckoutPage() {
 	const navigate = useNavigate();
+	const [mixedPaymentOpen, setMixedPaymentOpen] = useState(false);
 	const {
 		cart,
 		addToCart,
 		updateQuantity,
 		clearCart,
-		subtotal,
-		tax,
 		total,
 		checkout,
 		isCheckingOut,
@@ -38,7 +38,7 @@ function CheckoutPage() {
 					</Button>
 					<h1 className="text-xl font-bold">Checkout</h1>
 					<span className="text-sm text-muted-foreground">
-						(F2 to focus search)
+						(F2 to focus scanner)
 					</span>
 				</div>
 				<div className="flex-1 overflow-hidden p-4">
@@ -59,15 +59,6 @@ function CheckoutPage() {
 				{/* Summary and payment */}
 				<div className="border-t p-4 space-y-4">
 					<div className="space-y-2">
-						<div className="flex justify-between text-sm">
-							<span>Subtotal</span>
-							<span>${subtotal.toFixed(2)}</span>
-						</div>
-						<div className="flex justify-between text-sm">
-							<span>Tax (10%)</span>
-							<span>${tax.toFixed(2)}</span>
-						</div>
-						<Separator />
 						<div className="flex justify-between font-bold text-lg">
 							<span>Total</span>
 							<span>${total.toFixed(2)}</span>
@@ -96,7 +87,7 @@ function CheckoutPage() {
 						<Button
 							variant="outline"
 							className="flex flex-col gap-1 h-auto py-3"
-							onClick={() => checkout("mixed")}
+							onClick={() => setMixedPaymentOpen(true)}
 							disabled={cart.length === 0 || isCheckingOut}
 						>
 							<Wallet className="size-5" />
@@ -105,6 +96,16 @@ function CheckoutPage() {
 					</div>
 				</div>
 			</div>
+
+			<MixedPaymentDialog
+				open={mixedPaymentOpen}
+				onOpenChange={setMixedPaymentOpen}
+				total={total}
+				onConfirm={() => {
+					setMixedPaymentOpen(false);
+					checkout("mixed");
+				}}
+			/>
 		</div>
 	);
 }

@@ -6,8 +6,10 @@ import { UserTable } from "#/features/users/components/user-table";
 import { useUsers } from "#/features/users/hooks/use-users";
 import { Button } from "#/lib/components/ui/button";
 import { Skeleton } from "#/lib/components/ui/skeleton";
+import { requireAdmin } from "#/lib/auth-guard";
 
 export const Route = createFileRoute("/_authenticated/settings/")({
+	beforeLoad: requireAdmin,
 	component: SettingsPage,
 });
 

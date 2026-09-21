@@ -1,4 +1,5 @@
 import type { InvoiceDetail as InvoiceDetailType } from "#/features/invoices/types";
+import { useAuth } from "#/lib/hooks/useAuth";
 import { Button } from "#/lib/components/ui/button";
 import { Separator } from "#/lib/components/ui/separator";
 import {
@@ -17,6 +18,7 @@ interface InvoiceDetailProps {
 
 export function InvoiceDetail({ invoice }: InvoiceDetailProps) {
 	const voidInvoice = useVoidInvoice();
+	const { user } = useAuth();
 
 	return (
 		<div className="space-y-6">
@@ -29,7 +31,7 @@ export function InvoiceDetail({ invoice }: InvoiceDetailProps) {
 							: "—"}
 					</p>
 				</div>
-				{!invoice.voidedAt && (
+				{!invoice.voidedAt && user?.role === "admin" && (
 					<Button
 						variant="destructive"
 						onClick={() => voidInvoice.mutate({ id: invoice.id })}
@@ -79,15 +81,6 @@ export function InvoiceDetail({ invoice }: InvoiceDetailProps) {
 			<Separator />
 
 			<div className="space-y-2">
-				<div className="flex justify-between text-sm">
-					<span>Subtotal</span>
-					<span>${Number(invoice.subtotal).toFixed(2)}</span>
-				</div>
-				<div className="flex justify-between text-sm">
-					<span>Tax</span>
-					<span>${Number(invoice.tax).toFixed(2)}</span>
-				</div>
-				<Separator />
 				<div className="flex justify-between font-bold text-lg">
 					<span>Total</span>
 					<span>${Number(invoice.total).toFixed(2)}</span>

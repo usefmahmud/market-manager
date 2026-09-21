@@ -6,7 +6,9 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
+import { ThemeProvider } from "next-themes";
 import { SidebarProvider } from "#/lib/components/ui/sidebar";
+import { Toaster } from "#/lib/components/ui/sonner";
 import { TooltipProvider } from "#/lib/components/ui/tooltip";
 import TanStackQueryDevtools from "../integrations/tanstack-query/devtools";
 import appCss from "../styles.css?url";
@@ -26,7 +28,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "TanStack Start Starter",
+				title: "Market Manager",
 			},
 		],
 		links: [
@@ -41,15 +43,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
 			<body>
-				<TooltipProvider>
-					<SidebarProvider>{children}</SidebarProvider>
-				</TooltipProvider>
-				<TanStackDevtools
+				<ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+					<TooltipProvider>
+						<SidebarProvider>{children}</SidebarProvider>
+					</TooltipProvider>
+					<Toaster />
+					<TanStackDevtools
 					config={{
 						position: "bottom-right",
 					}}
@@ -62,6 +66,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 					]}
 				/>
 				<Scripts />
+				</ThemeProvider>
 			</body>
 		</html>
 	);

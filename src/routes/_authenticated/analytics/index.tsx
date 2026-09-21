@@ -18,8 +18,10 @@ import {
 	TableHeader,
 	TableRow,
 } from "#/lib/components/ui/table";
+import { requireAdmin } from "#/lib/auth-guard";
 
 export const Route = createFileRoute("/_authenticated/analytics/")({
+	beforeLoad: requireAdmin,
 	component: AnalyticsPage,
 });
 

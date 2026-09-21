@@ -12,7 +12,7 @@ interface ProductSearchProps {
 export function ProductSearch({ onAddProduct }: ProductSearchProps) {
 	const [search, setSearch] = useState("");
 	const [barcode, setBarcode] = useState("");
-	const inputRef = useRef<HTMLInputElement>(null);
+	const barcodeRef = useRef<HTMLInputElement>(null);
 
 	const { data: products } = useQuery({
 		queryKey: ["products", "pos", search],
@@ -44,7 +44,7 @@ export function ProductSearch({ onAddProduct }: ProductSearchProps) {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if (e.key === "F2") {
 				e.preventDefault();
-				inputRef.current?.focus();
+				barcodeRef.current?.focus();
 			}
 		};
 		window.addEventListener("keydown", handleKeyDown);
@@ -56,7 +56,8 @@ export function ProductSearch({ onAddProduct }: ProductSearchProps) {
 			<div className="relative">
 				<ScanBarcode className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
 				<Input
-					placeholder="Scan barcode or type to search..."
+					ref={barcodeRef}
+					placeholder="Scan barcode or press Enter to search..."
 					value={barcode}
 					onChange={(e) => setBarcode(e.target.value)}
 					onKeyDown={(e) => {
@@ -72,7 +73,6 @@ export function ProductSearch({ onAddProduct }: ProductSearchProps) {
 			<div className="relative">
 				<Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
 				<Input
-					ref={inputRef}
 					placeholder="Search products..."
 					value={search}
 					onChange={(e) => setSearch(e.target.value)}

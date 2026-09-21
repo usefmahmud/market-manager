@@ -26,5 +26,5 @@ export const navItems: NavItem[] = [
 	{ title: "Invoices", href: "/invoices", icon: Receipt },
 	{ title: "Checkout", href: "/checkout", icon: CreditCard },
 	{ title: "Analytics", href: "/analytics", icon: BarChart, adminOnly: true },
-	{ title: "Settings", href: "/settings", icon: Settings },
+	{ title: "Settings", href: "/settings", icon: Settings, adminOnly: true },
 ];
